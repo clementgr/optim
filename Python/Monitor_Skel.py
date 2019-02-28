@@ -42,6 +42,15 @@ from Verification import Verification
 # ---> A modifier...
 # ---> A modifier...
 
+# gradient a pas fixe
+from OraclePG import OraclePG
+from Gradient_F import Gradient_F
+
+# gradient a pas variable
+# from OraclePG import OraclePG
+# from Gradient_V import Gradient_V
+# from Wolfe_Skel import Wolfe
+
 ##### Initialisation de l'algorithme
 
 # ---> La dimension du vecteur dans l'espace primal est n-md
@@ -58,6 +67,13 @@ from Verification import Verification
 # ---> A modifier...
 # ---> A modifier...
 # ---> A modifier...
+
+# primal
+x0 = 0.1 * np.random.normal(size=n-md)
+
+# dual
+# x0 = 100 + np.random.normal(size=md)
+
 
 ##### Minimisation proprement dite
 
@@ -79,6 +95,17 @@ from Verification import Verification
 # ---> A modifier...
 # ---> A modifier...
 
+# gradient a pas fixe
+print()
+print("ALGORITHME DU GRADIENT A PAS FIXE")
+copt, gopt, xopt = Gradient_F(OraclePG, x0)
+
+#gradient a pas variable
+# print()
+# print("ALGORITHME DU GRADIENT A PAS VARIABLE")
+# copt, gopt, xopt = Gradient_V(OraclePG, x0)
+
+
 ##### Verification des resultats
 
 # ---> La fonction qui reconstitue les variables hydrauliques
@@ -91,10 +118,19 @@ from Verification import Verification
 #                        qopt, zopt, fopt, popt = HydrauliqueP(xopt)
 #
 #
-#                        qopt, zopt, fopt, popt = HydrauliqueDxopt)
+#      Probleme dual :
+#
+#                        qopt, zopt, fopt, popt = HydrauliqueD(xopt)
 #
 # ---> A modifier...
 # ---> A modifier...
 # ---> A modifier...
+
+# primal
+qopt, zopt, fopt, popt = HydrauliqueP(xopt)
+
+# dual
+# qopt, zopt, fopt, popt = HydrauliqueD(xopt)
+
 
 Verification(qopt, zopt, fopt, popt)
