@@ -31,7 +31,7 @@ def H(qc):
 
 def OraclePG(qC,ind):
     if (ind == 2):
-        return((F(Q(qC), None, ind))
+        return((F(Q(qC), None, ind)))
     elif (ind == 3):
         return((None, G(qC), ind))
     elif (ind == 4):

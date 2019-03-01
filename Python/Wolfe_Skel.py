@@ -2,6 +2,7 @@
 
 import numpy as np
 from numpy import dot
+from OraclePG import *
 
 ########################################################################
 #                                                                      #
@@ -25,13 +26,6 @@ from numpy import dot
 #             = 1 : conditions de Wolfe verifiees
 #             = 2 : indistinguabilite des iteres
 
-def first_wolfe_cond(alpha, xp, D, Oracle, w1):
-    argout_p = Oracle(xp, 4)
-    argout_n = Oracle(xp + alpha*D, 2)
-    return( (argout_n[0] - argout_p[0]) <= w1*alpha*np.dot(argout_p[1], D) )
-
-
-
 def Wolfe(alpha, x, D, Oracle):
 
     ##### Coefficients de la recherche lineaire
@@ -44,14 +38,14 @@ def Wolfe(alpha, x, D, Oracle):
 
     ok = 0
     dltx = 0.00000001
-    
+
     ind = 4
 
     ##### Algorithme de Fletcher-Lemarechal
 
     # Appel de l'oracle au point initial
     critere_x, gradient_x, _ = Oracle(x, ind)
-    
+
     # Initialisation de l'algorithme
     alpha_n = alpha
     xn = x
@@ -63,14 +57,14 @@ def Wolfe(alpha, x, D, Oracle):
         # xp represente le point pour la valeur precedente du pas.
         xp = xn
         xn = x + alpha_n*D
-        
+
         # Appel de l'oracle au point courant
         critere_xn, gradient_xn, _ = Oracle(xn, ind)
-        
+
         # Calcul des conditions de Wolfe
         cond1 = (omega_1*alpha*np.dot(gradient_x, D) - critere_xn + critere_x >= 0)
         cond2 = (np.dot(gradient_xn, D) - omega_2*np.dot(gradient_x, D))
-        
+
         # Test des conditions de Wolfe
         # - si la condition 1 n'est pas verifiée
         if (not cond1):
@@ -86,9 +80,12 @@ def Wolfe(alpha, x, D, Oracle):
         # - si les deux conditions de Wolfe sont verifiées
         else:
             ok = 1
-        
+
         # Test d'indistinguabilite
         if np.linalg.norm(xn - xp) < dltx:
             ok = 2
 
     return alpha_n, ok
+
+if __name__ == '__main__':
+    print(Wolfe(1, np.zeros(9), np.ones(9), OraclePG))
