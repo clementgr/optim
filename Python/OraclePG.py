@@ -15,59 +15,53 @@ from HydrauliqueD import HydrauliqueD
 from Verification import Verification
 
 def F(q):
-    return(np.vdot(q,r*q*np.abs(q))/3 + np.vdot(pr, np.dot(Ar,q)))
+    return np.dot(q,r*q*np.absolute(q))/3 + np.dot(pr,np.matmul(Ar,q))
+    #return np.vdot(q,r*q*np.abs(q))/3 + np.dot(pr,np.dot(Ar,q))
 
 def Q(qc):
-    return(q0 + np.dot(B,qc))
+    return q0+np.matmul(B,qc)
+    #return(q0 + np.dot(B,qc))
 
-def gradient_inter(q):
-    return(r*q*np.abs(q) + np.dot(np.transpose(Ar),pr))
+def gradient_F_tilde(q):
+    return r*q*np.absolute(q) + np.matmul(np.transpose(Ar),pr)
+    #return(r*q*np.abs(q) + np.dot(np.transpose(Ar),pr))
 
 def G(qc):
-    return(np.dot(np.transpose(B), gradient_inter(Q(qc))))
+    return np.matmul(np.transpose(B),gradient_F_tilde(Q(qc)))
+    #return(np.dot(np.transpose(B), gradient_F_tilde(Q(qc))))
 
 def H(qc):
-    diag = np.zeros((n,n))
-    q = Q(qc)
-    for i in range(n):
-        diag[i,i] = r[i]*np.abs(q[i])
-    H_int = 2*np.dot(diag, B)
-    return(np.dot(np.transpose(B), H_int))
+    return 2*np.matmul(np.transpose(B), np.matmul(np.diag(r*np.abs(q)), B))
+#def H(qc):
+#    diag = np.zeros((n,n))
+#    q = Q(qc)
+#    for i in range(n):
+#        diag[i,i] = r[i]*q[i]
+#    H_int = 2*np.dot(diag, B)
+#    return(np.dot(np.transpose(B), H_int))
 
 def OraclePG(qC,ind):
     if (ind == 2):
-        critere = F(Q(qC))
-        return((critere, None, ind))
+        return((F(Q(qC), None, ind))
     elif (ind == 3):
-        gradient = G(qC)
-        return((None, gradient, ind))
+        return((None, G(qC), ind))
     elif (ind == 4):
-        critere, gradient = F(Q(qC)), G(qC)
-        return((critere, gradient, ind))
+        return((F(Q(qC)), G(qC), ind))
     else:
         print('la valeur de ind ne correspond à aucune entrée possible')
 
-
 def OraclePH(qC,ind):
     if (ind == 2):
-        critere = F(Q(qC))
-        return((critere, None, None, ind))
+        return((F(Q(qC)), None, None, ind))
     elif (ind == 3):
-        gradient = G(qC)
-        return((None, gradient, None, ind))
+        return((None, G(qC), None, ind))
     elif (ind == 4):
-        critere, gradient = F(Q(qC)), G(qC)
-        return((critere, gradient, None, ind))
+        return((F(Q(qC)), G(qC), None, ind))
     elif (ind == 5):
-        hessienne = H(qC)
-        return((None, None, hessienne, ind))
+        return((None, None, H(qC), ind))
     elif (ind == 6):
-        hessienne = H(qC)
-        return((None, gradient, hessienne, ind))
+        return((None, G(qC), H(qC), ind))
     elif (ind == 7):
-        critere = F(Q(qC))
-        gradient = G(qC)
-        hessienne = H(qC)
-        return((critere, gradient, hessienne, ind))
+        return((F(Q(qC)), G(qC), H(qC), ind))
     else:
         print('la valeur de ind ne correspond à aucune entrée possible')
