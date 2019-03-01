@@ -30,7 +30,7 @@ def H(qc):
     diag = np.zeros((n,n))
     q = Q(qc)
     for i in range(n):
-        diag[i,i] = r[i]*q[i]
+        diag[i,i] = r[i]*np.abs(q[i])
     H_int = 2*np.dot(diag, B)
     return(np.dot(np.transpose(B), H_int))
 
