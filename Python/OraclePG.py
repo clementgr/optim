@@ -36,13 +36,13 @@ def H(qc):
 #    diag = np.zeros((n,n))
 #    q = Q(qc)
 #    for i in range(n):
-#        diag[i,i] = r[i]*q[i]
+#        diag[i,i] = r[i]*np.abs(q[i])
 #    H_int = 2*np.dot(diag, B)
 #    return(np.dot(np.transpose(B), H_int))
 
 def OraclePG(qC,ind):
     if (ind == 2):
-        return((F(Q(qC), None, ind))
+        return((F(Q(qC), None, ind)))
     elif (ind == 3):
         return((None, G(qC), ind))
     elif (ind == 4):

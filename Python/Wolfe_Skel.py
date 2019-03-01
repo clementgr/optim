@@ -2,6 +2,7 @@
 
 import numpy as np
 from numpy import dot
+from OraclePG import *
 
 ########################################################################
 #                                                                      #
@@ -24,13 +25,6 @@ from numpy import dot
 #    ok     : indicateur de reussite de la recherche
 #             = 1 : conditions de Wolfe verifiees
 #             = 2 : indistinguabilite des iteres
-
-def first_wolfe_cond(alpha, xp, D, Oracle, w1):
-    argout_p = Oracle(xp, 4)
-    argout_n = Oracle(xp + alpha*D, 2)
-    return( (argout_n[0] - argout_p[0]) <= w1*alpha*np.dot(argout_p[1], D) )
-
-
 
 def Wolfe(alpha, x, D, Oracle):
 
@@ -78,7 +72,7 @@ def Wolfe(alpha, x, D, Oracle):
         gradient_n = argout_p[1]
 
         first_cond = (critere_n - critere_p) <= omega_1*alpha_n*np.dot(gradient_p, D)
-        second_cond = np.dot(gradient_n,d) >= omega_2*np.dot(gradient_p,d)
+        second_cond = np.dot(gradient_n, D) >= omega_2*np.dot(gradient_p, D)
 
         # Test des conditions de Wolfe
         # - si les deux conditions de Wolfe sont verifiees,
@@ -106,3 +100,6 @@ def Wolfe(alpha, x, D, Oracle):
             ok = 2
 
     return alpha_n, ok
+
+if __name__ == '__main__':
+    print(Wolfe(1, np.zeros(9), np.ones(9), OraclePG))
