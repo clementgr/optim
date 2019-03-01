@@ -39,12 +39,12 @@ def Wolfe(alpha, x, D, Oracle):
     ok = 0
     dltx = 0.00000001
 
+    ind = 4
+
     ##### Algorithme de Fletcher-Lemarechal
 
     # Appel de l'oracle au point initial
-    argout = Oracle(x, 4)
-    critere = argout[0]
-    gradient = argout[1]
+    critere_x, gradient_x, _ = Oracle(x, ind)
 
     # Initialisation de l'algorithme
     alpha_n = alpha
@@ -56,44 +56,30 @@ def Wolfe(alpha, x, D, Oracle):
         # xn represente le point pour la valeur courante du pas,
         # xp represente le point pour la valeur precedente du pas.
         xp = xn
-        xn = xp + alpha_n*D
+        xn = x + alpha_n*D
+
+        # Appel de l'oracle au point courant
+        critere_xn, gradient_xn, _ = Oracle(xn, ind)
 
         # Calcul des conditions de Wolfe
-        #
-        # ---> A completer...
-        # ---> A completer...
-
-        # fisrt Wolfe rule
-        argout_p = Oracle(xp, 4)
-        critere_p = argout_p[0]
-        gradient_p = argout_p[1]
-        argout_n = Oracle(xn, 4)
-        critere_n = argout_p[0]
-        gradient_n = argout_p[1]
-
-        first_cond = (critere_n - critere_p) <= omega_1*alpha_n*np.dot(gradient_p, D)
-        second_cond = np.dot(gradient_n, D) >= omega_2*np.dot(gradient_p, D)
+        cond1 = (omega_1*alpha*np.dot(gradient_x, D) - critere_xn + critere_x >= 0)
+        cond2 = (np.dot(gradient_xn, D) - omega_2*np.dot(gradient_x, D))
 
         # Test des conditions de Wolfe
-        # - si les deux conditions de Wolfe sont verifiees,
-        #   faire ok = 1 : on sort alors de la boucle while
-        # - sinon, modifier la valeur de alphan : on reboucle.
-        #
-        # ---> A completer...
-        # ---> A completer...
-
-        if (not first_cond):
+        # - si la condition 1 n'est pas verifiée
+        if (not cond1):
             alpha_max = alpha_n
             alpha_n = (alpha_min + alpha_max)/2
-        else:
-            if (not second_cond):
-                alpha_min = alpha_n
-                if (alpha_max == np.inf):
-                    alpha_n = 2*alpha_min
-                else:
-                    alpha_n = (alpha_min + alpha_max)/2
+        # - si la condition 1 est vérifiée et que la condition 2 ne l'est pas
+        elif (not cond2):
+            alpha_min = alpha
+            if alpha_max == np.inf:
+                alpha_n = 2*alpha_min
             else:
-                ok = 1
+                alpha_n = (alpha_min + alpha_max)/2
+        # - si les deux conditions de Wolfe sont verifiées
+        else:
+            ok = 1
 
         # Test d'indistinguabilite
         if np.linalg.norm(xn - xp) < dltx:
