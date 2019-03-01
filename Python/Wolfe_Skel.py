@@ -21,12 +21,19 @@ from numpy import dot
 #  Arguments en sortie
 #
 #    alphan : valeur du pas apres recherche lineaire
-#    ok     : indicateur de reussite de la recherche 
+#    ok     : indicateur de reussite de la recherche
 #             = 1 : conditions de Wolfe verifiees
 #             = 2 : indistinguabilite des iteres
 
+def first_wolfe_cond(alpha, xp, D, Oracle, w1):
+    argout_p = Oracle(xp, 4)
+    argout_n = Oracle(xp + alpha*D, 2)
+    return( (argout_n[0] - argout_p[0]) <= w1*alpha*np.dot(argout_p[1], D) )
+
+
+
 def Wolfe(alpha, x, D, Oracle):
-    
+
     ##### Coefficients de la recherche lineaire
 
     omega_1 = 0.1
@@ -41,17 +48,17 @@ def Wolfe(alpha, x, D, Oracle):
     ind = 4
 
     ##### Algorithme de Fletcher-Lemarechal
-    
+
     # Appel de l'oracle au point initial
     critere_x, gradient_x, _ = Oracle(x, ind)
     
     # Initialisation de l'algorithme
     alpha_n = alpha
     xn = x
-    
+
     # Boucle de calcul du pas
     while ok == 0:
-        
+
         # xn represente le point pour la valeur courante du pas,
         # xp represente le point pour la valeur precedente du pas.
         xp = xn
