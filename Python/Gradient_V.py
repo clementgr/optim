@@ -8,7 +8,7 @@ from time import process_time
 #                                                                           #
 #         RESOLUTION D'UN PROBLEME D'OPTIMISATION SANS CONTRAINTES          #
 #                                                                           #
-#         Methode du gradient a pas fixe                                    #
+#         Methode du gradient a pas variable                                #
 #                                                                           #
 #############################################################################
 
@@ -20,7 +20,6 @@ def Gradient_V(Oracle, x0):
     ##### Initialisation des variables
 
     iter_max = 10000
-    #gradient_step = 0.005
     threshold = 0.000001
 
     gradient_norm_list = []
@@ -47,8 +46,8 @@ def Gradient_V(Oracle, x0):
         D = -gradient
 
         # Mise a jour des variables
-        alpha_k_0 = -2*(-1)
-        gradient_step = Wolfe(alpha_k_0, x, D, Oracle)
+        gradient_step = 1 # Trouver un meilleur coefficient
+        gradient_step, _ = Wolfe(gradient_step, x, D, Oracle)
         x = x + (gradient_step*D)
 
         # Evolution du gradient, du pas, et du critere
@@ -68,6 +67,11 @@ def Gradient_V(Oracle, x0):
     print('Temps CPU :', time_cpu)
     print('Critere optimal :', critere_opt)
     print('Norme du gradient :', norm(gradient_opt))
+
+    # Visualisation de la convergence
+    Visualg(gradient_norm_list, gradient_step_list, critere_list)
+
+    return critere_opt, gradient_opt, x_opt
 
     # Visualisation de la convergence
     Visualg(gradient_norm_list, gradient_step_list, critere_list)

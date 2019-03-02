@@ -30,8 +30,8 @@ def Wolfe(alpha, x, D, Oracle):
 
     ##### Coefficients de la recherche lineaire
 
-    omega_1 = 0.1
-    omega_2 = 0.9
+    omega_1 = 0.1 # c.f. methodes.pdf
+    omega_2 = 0.9 # c.f. methodes.pdf
 
     alpha_min = 0
     alpha_max = np.inf
@@ -62,8 +62,8 @@ def Wolfe(alpha, x, D, Oracle):
         critere_xn, gradient_xn, _ = Oracle(xn, ind)
 
         # Calcul des conditions de Wolfe
-        cond1 = (omega_1*alpha*np.dot(gradient_x, D) - critere_xn + critere_x >= 0)
-        cond2 = (np.dot(gradient_xn, D) - omega_2*np.dot(gradient_x, D))
+        cond1 = (omega_1*alpha_n*np.dot(gradient_x, D) - critere_xn + critere_x >= 0)
+        cond2 = (np.dot(gradient_xn, D) - omega_2*np.dot(gradient_x, D) >= 0)
 
         # Test des conditions de Wolfe
         # - si la condition 1 n'est pas verifiée
@@ -72,7 +72,7 @@ def Wolfe(alpha, x, D, Oracle):
             alpha_n = (alpha_min + alpha_max)/2
         # - si la condition 1 est vérifiée et que la condition 2 ne l'est pas
         elif (not cond2):
-            alpha_min = alpha
+            alpha_min = alpha_n
             if alpha_max == np.inf:
                 alpha_n = 2*alpha_min
             else:
@@ -86,6 +86,3 @@ def Wolfe(alpha, x, D, Oracle):
             ok = 2
 
     return alpha_n, ok
-
-if __name__ == '__main__':
-    print(Wolfe(1, np.zeros(9), np.ones(9), OraclePG))
