@@ -67,6 +67,11 @@ copt, gopt, xopt = Gradient_F(OraclePG, x0)
 # print("ALGORITHME DU GRADIENT A PAS VARIABLE")
 # copt, gopt, xopt = Gradient_V(OraclePG, x0)
 
+# Gradient BFGS Inverse
+#print()
+#print("ALGORITHME DE GRADIENT BFGS INVERSE")
+#copt, gopt, xopt = BFGS(OraclePG, x0)
+
 # Newton a pas fixe
 #print()
 #print("ALGORITHME DE NEWTON A PAS FIXE")
