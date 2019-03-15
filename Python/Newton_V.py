@@ -10,13 +10,14 @@ from time import process_time
 #                                                                           #
 #         RESOLUTION D'UN PROBLEME D'OPTIMISATION SANS CONTRAINTES          #
 #                                                                           #
-#         Methode de Newton a pas fixe                                      #
+#         Methode de Newton a pas variable                                  #
 #                                                                           #
 #############################################################################
 
 from Visualg import Visualg
+from Wolfe_Skel import Wolfe_7
 
-def Newton_F(Oracle, x0):
+def Newton(Oracle, x0):
 
     ##### Initialisation des variables
 
@@ -38,7 +39,7 @@ def Newton_F(Oracle, x0):
 
         # Valeur du critere et du gradient
         ind = 7
-        critere, gradient, hessien, _ = Oracle(x ,ind)
+        critere, gradient, hessien, _ = Oracle(x, ind)
 
         # Test de convergence
         gradient_norm = norm(gradient)
@@ -46,7 +47,12 @@ def Newton_F(Oracle, x0):
             break
 
         # Direction de descente
-        D = - dot(inv(hessien), gradient)
+        #D = - dot(inv(hessien), gradient)
+        D = np.linalg.solve(hessien, -gradient)
+
+        # Pas du gradient par recherche linéaire
+        gradient_step = 1 # Trouver un meilleur coefficient
+        gradient_step, _ = Wolfe_7(gradient_step, x, D, Oracle)
 
         # Mise a jour des variables
         x = x + (gradient_step*D)
