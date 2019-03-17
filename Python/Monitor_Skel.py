@@ -54,7 +54,7 @@ from Wolfe_Skel import Wolfe
 # Newton a pas variable
 # from OraclePH import OraclePH
 # from Newton_V import Newton
-# from Wolfe_Skel import Wolfe
+# from Wolfe_Skel import WolfePH
 
 
 ##### Initialisation de l'algorithme
@@ -85,7 +85,7 @@ x0 = 0.1 * np.random.normal(size=n-md)
 
 # Gradient BFGS Inverse
 print()
-print("ALGORITHME DE GRADIENT BFGS INVERSE")
+print("ALGORITHME DE GRADIENT BFGS")
 copt, gopt, xopt = BFGS(OraclePG, x0)
 
 # Gradient Polak-Ribiere

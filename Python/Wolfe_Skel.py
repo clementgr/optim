@@ -88,7 +88,7 @@ def Wolfe(alpha, x, D, Oracle):
     return alpha_n, ok
 
 
-def Wolfe_7(alpha, x, D, Oracle):
+def WolfePH(alpha, x, D, Oracle):
 
     ##### Coefficients de la recherche lineaire
 

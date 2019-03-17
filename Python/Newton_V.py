@@ -46,13 +46,13 @@ def Newton(Oracle, x0):
         if gradient_norm <= threshold:
             break
 
-        # Direction de descente
+        # Direction de descente - 2 façon de calculer : inverser la hessienne ou resoudre un syst linéaire
         #D = - dot(inv(hessien), gradient)
         D = np.linalg.solve(hessien, -gradient)
 
         # Pas du gradient par recherche linéaire
         gradient_step = 1 # Trouver un meilleur coefficient
-        gradient_step, _ = Wolfe_7(gradient_step, x, D, Oracle)
+        gradient_step, _ = WolfePH(gradient_step, x, D, Oracle)
 
         # Mise a jour des variables
         x = x + (gradient_step*D)
