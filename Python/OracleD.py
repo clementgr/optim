@@ -31,7 +31,7 @@ def Q_chapeau(lbd):
     return q_chapeau
 
 def fonction_duale(lbd):
-    return(-1 * Lagrangien(Q_chapeau(lbd), lbd))
+    return(Lagrangien(Q_chapeau(lbd), lbd))
 
 def G(lbd):
     return np.matmul(Ad, Q_chapeau(lbd)) - fd
@@ -46,27 +46,27 @@ def H(lbd):
 
 def OracleDG(lbd,ind):
     if (ind == 2):
-        return((fonction_duale(lbd), None, ind))
+        return((-fonction_duale(lbd), None, ind))
     elif (ind == 3):
-        return((None, G(lbd), ind))
+        return((None, -G(lbd), ind))
     elif (ind == 4):
-        return((fonction_duale(lbd), G(lbd), ind))
+        return((-fonction_duale(lbd), -G(lbd), ind))
     else:
         print('la valeur de ind ne correspond à aucune entrée possible')
 
 def OracleDH(lbd,ind):
     if (ind == 2):
-        return((fonction_duale(lbd), None, None, ind))
+        return((-fonction_duale(lbd), None, None, ind))
     elif (ind == 3):
-        return((None, G(lbd), None, ind))
+        return((None, -G(lbd), None, ind))
     elif (ind == 4):
-        return((fonction_duale(lbd), G(lbd), None, ind))
+        return((-fonction_duale(lbd), -G(lbd), None, ind))
     elif (ind == 5):
-        return((None, None, H(lbd), ind))
+        return((None, None, -H(lbd), ind))
     elif (ind == 6):
-        return((None, G(lbd), H(lbd), ind))
+        return((None, -G(lbd), -H(lbd), ind))
     elif (ind == 7):
-        return((fonction_duale(lbd), G(lbd), H(lbd), ind))
+        return((-fonction_duale(lbd), -G(lbd), -H(lbd), ind))
     else:
         print('la valeur de ind ne correspond à aucune entrée possible')
 
