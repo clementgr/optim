@@ -30,13 +30,13 @@ def Q_chapeau(lbd):
         q_chapeau[i] = -np.sign(x[i])*np.sqrt(np.abs(x[i])/r[i])
     return q_chapeau
 
-def fonction_duale(lbd):
+def Phi(lbd):
     return(Lagrangien(Q_chapeau(lbd), lbd))
 
-def G(lbd):
+def gradient_Phi(lbd):
     return np.matmul(Ad, Q_chapeau(lbd)) - fd
 
-def H(lbd):
+def hessien_Phi(lbd):
     x = X(lbd)
     print('X(lbd) = {}'.format(x))
     D = np.zeros((n,n))
@@ -46,27 +46,27 @@ def H(lbd):
 
 def OracleDG(lbd,ind):
     if (ind == 2):
-        return((-fonction_duale(lbd), None, ind))
+        return((-Phi(lbd), None, ind))
     elif (ind == 3):
-        return((None, -G(lbd), ind))
+        return((None, -gradient_Phi(lbd), ind))
     elif (ind == 4):
-        return((-fonction_duale(lbd), -G(lbd), ind))
+        return((-Phi(lbd), -gradient_Phi(lbd), ind))
     else:
         print('la valeur de ind ne correspond à aucune entrée possible')
 
 def OracleDH(lbd,ind):
     if (ind == 2):
-        return((-fonction_duale(lbd), None, None, ind))
+        return((-Phi(lbd), None, None, ind))
     elif (ind == 3):
-        return((None, -G(lbd), None, ind))
+        return((None, -gradient_Phi(lbd), None, ind))
     elif (ind == 4):
-        return((-fonction_duale(lbd), -G(lbd), None, ind))
+        return((-Phi(lbd), -gradient_Phi(lbd), None, ind))
     elif (ind == 5):
-        return((None, None, -H(lbd), ind))
+        return((None, None, -hessien_Phi(lbd), ind))
     elif (ind == 6):
-        return((None, -G(lbd), -H(lbd), ind))
+        return((None, -gradient_Phi(lbd), -hessien_Phi(lbd), ind))
     elif (ind == 7):
-        return((-fonction_duale(lbd), -G(lbd), -H(lbd), ind))
+        return((-Phi(lbd), -gradient_Phi(lbd), -hessien_Phi(lbd), ind))
     else:
         print('la valeur de ind ne correspond à aucune entrée possible')
 

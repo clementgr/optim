@@ -73,12 +73,12 @@ x0 = 0.1 * np.random.normal(size=n-md)
 
 # ---> Executer la fonction d'optimisation choisie
 
-# gradient a pas fixe
+# Gradient a pas fixe
 # print()
 # print("ALGORITHME DU GRADIENT A PAS FIXE")
 # copt, gopt, xopt = Gradient_F(OraclePG, x0)
 
-#gradient a pas variable
+# Gradient a pas variable
 # print()
 # print("ALGORITHME DU GRADIENT A PAS VARIABLE")
 # copt, gopt, xopt = Gradient_V(OraclePG, x0)
