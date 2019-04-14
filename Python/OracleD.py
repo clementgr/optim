@@ -18,7 +18,7 @@ def F(q):
     return np.dot(q,r*q*np.absolute(q))/3 + np.dot(pr,np.matmul(Ar,q))
 
 def Lagrangien(q,lbd):
-    return F(q) + np.dot(lbd, Ad @ q - fd)
+    return F(q) + np.dot(lbd, np.matmul(Ad, q) - fd)
 
 def X(lbd):
     return np.matmul(np.transpose(Ar),pr) + np.matmul(np.transpose(Ad),lbd)
@@ -41,7 +41,7 @@ def hessien_Phi(lbd):
     print('X(lbd) = {}'.format(x))
     D = np.zeros((n,n))
     for k in range(n):
-        D[k,k] = np.sign(x[k]) / 2 / np.sqrt(r[k] * np.abs(x[k]))
+        D[k,k] = -1 / (2 * np.sqrt(r[k] * np.abs(x[k]))
     return np.matmul(Ad, np.matmul(D, np.transpose(Ad)))
 
 def OracleDG(lbd,ind):
@@ -69,9 +69,3 @@ def OracleDH(lbd,ind):
         return((-Phi(lbd), -gradient_Phi(lbd), -hessien_Phi(lbd), ind))
     else:
         print('la valeur de ind ne correspond à aucune entrée possible')
-
-if __name__ == '__main__':
-    ind = 7
-    lbd = np.array([+0.08, -1.30, +0.13, +0.09, +0.16, +0.14, +0.12, +0.07, +0.17, +0.11, +0.25, +0.01, +0.13])
-    #lbd = np.ones(md)
-    print(OracleDH(lbd, ind))
