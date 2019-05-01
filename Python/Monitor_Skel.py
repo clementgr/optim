@@ -28,34 +28,19 @@ from Verification import Verification
 # ---> Charger les fonctions associees a l'oracle du probleme,
 #      aux algorithmes d'optimisation et de recherche lineaire
 
-# gradient a pas fixe
 from OraclePG import OraclePG
 from Gradient_F import Gradient_F
-
-# gradient a pas variable
-# from OraclePG import OraclePG
-# from Gradient_V import Gradient_V
-# from Wolfe_Skel import Wolfe
-
-# Gradient Polak-Ribiere
-# from OraclePG import OraclePG
-# from Polak_Ribiere import Polak_Ribiere
-# from Wolfe_Skel import Wolfe
-
-# Gradient BFGS Inverse
-from OraclePG import OraclePG
-from BFGS import BFGS
+from Gradient_V import Gradient_V
 from Wolfe_Skel import Wolfe
+from Polak_Ribiere import Polak_Ribiere
+from BFGS import BFGS
+from OraclePG import OraclePH
+from Newton_F import Newton_F
+from Newton_V import Newton
+from Wolfe_Skel import WolfePH
 
-# Newton a pas fixe
-# from OraclePH import OraclePH
-# from Newton_F import Newton_F
-
-# Newton a pas variable
-# from OraclePH import OraclePH
-# from Newton_V import Newton
-# from Wolfe_Skel import WolfePH
-
+from OracleD import OracleDG
+from OracleD import OracleDH
 
 ##### Initialisation de l'algorithme
 
@@ -73,35 +58,69 @@ x0 = 0.1 * np.random.normal(size=n-md)
 
 # ---> Executer la fonction d'optimisation choisie
 
-# Gradient a pas fixe
+# PRIMAL
+
+# Gradient à pas fixe
 # print()
-# print("ALGORITHME DU GRADIENT A PAS FIXE")
+# print("ALGORITHME DU GRADIENT A PAS FIXE - PRIMAL")
 # copt, gopt, xopt = Gradient_F(OraclePG, x0)
 
-# Gradient a pas variable
+# Gradient à pas variable
 # print()
-# print("ALGORITHME DU GRADIENT A PAS VARIABLE")
+# print("ALGORITHME DU GRADIENT A PAS VARIABLE - PRIMAL")
 # copt, gopt, xopt = Gradient_V(OraclePG, x0)
 
 # Gradient BFGS Inverse
-print()
-print("ALGORITHME DE GRADIENT BFGS")
-copt, gopt, xopt = BFGS(OraclePG, x0)
+# print()
+# print("ALGORITHME DE GRADIENT BFGS - PRIMAL")
+# copt, gopt, xopt = BFGS(OraclePG, x0)
 
 # Gradient Polak-Ribiere
-#print()
-#print("ALGORITHME DE GRADIENT POLAK-RIBIERE")
-#copt, gopt, xopt = Polak_Ribiere(OraclePG, x0)
+# print()
+# print("ALGORITHME DE GRADIENT POLAK-RIBIERE - PRIMAL")
+# copt, gopt, xopt = Polak_Ribiere(OraclePG, x0)
 
-# Newton a pas fixe
-#print()
-#print("ALGORITHME DE NEWTON A PAS FIXE")
-#copt, gopt, xopt = Newton_F(OraclePH, x0)
+# Newton à pas fixe
+# print()
+# print("ALGORITHME DE NEWTON A PAS FIXE - PRIMAL")
+# copt, gopt, xopt = Newton_F(OraclePH, x0)
 
-# Newton a pas variable
-#print()
-#print("ALGORITHME DE NEWTON A PAS VARIABLE")
-#copt, gopt, xopt = Newton(OraclePH, x0)
+# Newton à pas variable
+# print()
+# print("ALGORITHME DE NEWTON A PAS VARIABLE - PRIMAL")
+# copt, gopt, xopt = Newton(OraclePH, x0)
+
+# DUAL
+
+# Gradient à pas fixe (modifier gradient_step = 0.65 dans l'initialisation dans Gradient_F.py)
+# print()
+# print("ALGORITHME DU GRADIENT A PAS FIXE - DUAL")
+# copt, gopt, xopt = Gradient_F(OracleDG, x0)
+
+# Gradient à pas variable
+# print()
+# print("ALGORITHME DU GRADIENT A PAS VARIABLE - DUAL")
+# copt, gopt, xopt = Gradient_V(OracleDG, x0)
+
+# Gradient BFGS Inverse (modifier gradient_step = 0.5 dans l'initialisation, et gradient_step = 10 dans la boucle dans BFGS.py)
+# print()
+# print("ALGORITHME DE GRADIENT BFGS - DUAL")
+# copt, gopt, xopt = BFGS(OracleDG, x0)
+
+# Gradient Polak-Ribiere (modifier gradient_step = 1 dans l'initialisation, et gradient_step = 1000 dans la boucle dans Polak_Ribiere.py)
+# print()
+# print("ALGORITHME DE GRADIENT POLAK-RIBIERE - DUAL")
+# copt, gopt, xopt = Polak_Ribiere(OracleDG, x0)
+
+# Newton à pas fixe
+# print()
+# print("ALGORITHME DE NEWTON A PAS FIXE - DUAL")
+# copt, gopt, xopt = Newton_F(OracleDH, x0)
+
+# Newton à pas variable
+# print()
+# print("ALGORITHME DE NEWTON A PAS VARIABLE - DUAL")
+# copt, gopt, xopt = Newton(OracleDH, x0)
 
 ##### Verification des resultats
 

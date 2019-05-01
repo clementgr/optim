@@ -15,7 +15,7 @@ from time import process_time
 #############################################################################
 
 from Visualg import Visualg
-from Wolfe_Skel import Wolfe_7
+from Wolfe_Skel import WolfePH
 
 def Newton(Oracle, x0):
 
@@ -46,8 +46,8 @@ def Newton(Oracle, x0):
         if gradient_norm <= threshold:
             break
 
-        # Direction de descente - 2 façon de calculer : inverser la hessienne ou resoudre un syst linéaire
-        #D = - dot(inv(hessien), gradient)
+        # Direction de descente - 2 calculs possible : inversion de la hessienne ou système linéaire
+        # D = - dot(inv(hessien), gradient)
         D = np.linalg.solve(hessien, -gradient)
 
         # Pas du gradient par recherche linéaire

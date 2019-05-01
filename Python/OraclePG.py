@@ -27,7 +27,7 @@ def G(qc):
     return np.matmul(np.transpose(B),gradient_F_tilde(Q(qc)))
 
 def H(qc):
-    return 2*np.matmul(np.transpose(B), np.matmul(np.diag(r*np.absolute(q)), B))
+    return 2*np.matmul(np.transpose(B), np.matmul(np.diag(r*np.absolute(Q(qc))), B))
 
 def OraclePG(qC,ind):
     if (ind == 2):

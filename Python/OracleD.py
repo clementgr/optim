@@ -18,7 +18,7 @@ def F(q):
     return np.dot(q,r*q*np.absolute(q))/3 + np.dot(pr,np.matmul(Ar,q))
 
 def Lagrangien(q,lbd):
-    return F(q) + np.dot(lbd, np.matmul(Ad, q) - fd)
+    return F(q) + np.dot(lbd, np.matmul(Ad,q) - fd)
 
 def X(lbd):
     return np.matmul(np.transpose(Ar),pr) + np.matmul(np.transpose(Ad),lbd)
@@ -27,7 +27,7 @@ def Q_chapeau(lbd):
     q_chapeau = np.zeros(n)
     x = X(lbd)
     for i in range(n):
-        q_chapeau[i] = -np.sign(x[i])*np.sqrt(np.abs(x[i])/r[i])
+        q_chapeau[i] = - np.sign(x[i]) * np.sqrt(np.abs(x[i])/r[i])
     return q_chapeau
 
 def Phi(lbd):
@@ -38,10 +38,9 @@ def gradient_Phi(lbd):
 
 def hessien_Phi(lbd):
     x = X(lbd)
-    print('X(lbd) = {}'.format(x))
     D = np.zeros((n,n))
     for k in range(n):
-        D[k,k] = -1 / (2 * np.sqrt(r[k] * np.abs(x[k]))
+        D[k,k] = -1 / (2 * np.sqrt(r[k] * np.abs(x[k])))
     return np.matmul(Ad, np.matmul(D, np.transpose(Ad)))
 
 def OracleDG(lbd,ind):

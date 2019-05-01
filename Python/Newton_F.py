@@ -32,13 +32,14 @@ def Newton_F(Oracle, x0):
 
     x = x0
 
+    ind = 7
+
     ##### Boucle sur les iterations
 
     for k in range(iter_max):
 
         # Valeur du critere et du gradient
-        ind = 7
-        critere, gradient, hessien, _ = Oracle(x ,ind)
+        critere, gradient, hessien, ind = Oracle(x, ind)
 
         # Test de convergence
         gradient_norm = norm(gradient)
